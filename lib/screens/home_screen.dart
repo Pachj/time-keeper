@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:time_keeper/components/current_work_entry.dart';
 import 'package:time_keeper/entities/work_entry.dart';
 import 'package:time_keeper/services/isar_service.dart';
 
@@ -12,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _workEntryRunning = false;
-  late int workEntryId;
+  late int workEntryId = 0;
 
   void _createNewWorkEntry() async {
     workEntryId =
@@ -42,6 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 _workEntryRunning ? _stopWorkEntry() : _createNewWorkEntry(),
             child: _workEntryRunning ? const Text("Stop") : const Text("Start"),
           ),
+          if (_workEntryRunning)
+            CurrentWorkEntry(service: widget.service, workEntryId: workEntryId),
         ],
       ),
     );

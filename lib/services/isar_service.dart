@@ -24,6 +24,11 @@ class IsarService {
     }
   }
 
+  Future<WorkEntry?> getWorkEntry(int id) async {
+    final isarDB = await db;
+    return isarDB.workEntrys.getSync(id);
+  }
+
   Future<Isar> openDB() async {
     // create new DB if no one exists
     if (Isar.instanceNames.isEmpty) {

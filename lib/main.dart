@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:time_keeper/screens/home_screen.dart';
+import 'package:time_keeper/services/isar_service.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  final service = IsarService();
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +20,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      home: HomeScreen(
+        service: service,
+      ),
     );
   }
 }

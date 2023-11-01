@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:time_keeper/models/work_entry.dart';
+import 'package:time_keeper/entities/work_entry.dart';
+import 'package:time_keeper/services/isar_service.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final IsarService service;
+  const HomeScreen({super.key, required this.service});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -10,19 +12,22 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _workEntryRunning = false;
-  WorkEntry? workEntry;
+  late int workEntryId;
 
-  void _createNewWorkEntry() {
+  void _createNewWorkEntry() async {
+    workEntryId =
+        await widget.service.saveWorkEntry(WorkEntry()..start = DateTime.now());
+
     setState(() {
       _workEntryRunning = true;
-      workEntry = WorkEntry(start: DateTime.now());
     });
   }
 
   void _stopWorkEntry() {
+    widget.service.setActualEndOnWorkEntry(workEntryId);
+
     setState(() {
       _workEntryRunning = false;
-      workEntry!.end = DateTime.now();
     });
   }
 

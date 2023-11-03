@@ -15,6 +15,25 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _workEntryRunning = false;
   late int workEntryId = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    Future<WorkEntry?> runningWorkEntry = _getRunningWorkEntry();
+
+    runningWorkEntry.then((value) {
+      if (value != null) {
+        setState(() {
+          _workEntryRunning = true;
+          workEntryId = value.id;
+        });
+      }
+    });
+  }
+
+  Future<WorkEntry?> _getRunningWorkEntry() async {
+    return await widget.service.getRunningWorkEntry();
+  }
+
   void _createNewWorkEntry() async {
     workEntryId =
         await widget.service.saveWorkEntry(WorkEntry()..start = DateTime.now());
@@ -35,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Home')),
+      appBar: AppBar(title: const Text('Home')),
       body: Column(
         children: [
           ElevatedButton(

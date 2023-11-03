@@ -9,6 +9,11 @@ class IsarService {
     db = openDB();
   }
 
+  Future<WorkEntry?> getRunningWorkEntry() async {
+    final isarDB = await db;
+    return isarDB.workEntrys.filter().endIsNull().sortByStartDesc().findFirst();
+  }
+
   Future<int> saveWorkEntry(WorkEntry workEntry) async {
     final isarDB = await db;
     return isarDB.writeTxnSync<int>(() => isarDB.workEntrys.putSync(workEntry));
